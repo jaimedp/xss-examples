@@ -12,6 +12,13 @@ function xssOff(req, res, next) {
   next();
 }
 
+function csp(req, res, next) {
+  res.append('Content-Security-Policy', "script-src 'self' https://cdnjs.cloudflare.com");
+  next();
+}
+
+app.use(csp);
+
 app.get('/', function (req, res) {
 
   var html = '\
@@ -119,15 +126,67 @@ app.post('/b64', function (req, res) {
 var todos = [];
 
 
+
 app.get('/todo', function (req, res) {
-  res.send(todos);
+  var html = '<html><body>\
+    <form method="post"><input name="todo" size="30"><button type="submit">Add Todo</button></form>\
+    <h3>Todos:</h3>\
+    <ul><li>' + todos.join('<li>') + '</ul>';
+
+  res.send(html);
 });
 
 app.post('/todo', function (req, res) {
-  todos.push(req.body.todo);
+  var todo = req.body.todo;
+  console.log('got ', todo);
+  todos.push(todo);
+
+  res.redirect('/todo');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.get('/api/todo', function (req, res) {
   res.send(todos);
 });
 
+app.post('/api/todo', function (req, res) {
+  todos.push(req.body.todo);
+  res.send(todos);
+});
 
 
 

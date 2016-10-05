@@ -33,13 +33,13 @@
       }
 
       function getTodos() {
-        return fetch('http://localhost:3000/todo')
+        return fetch('http://localhost:3000/api/todo')
           .then(function (res) { return res.json(); });
       }
 
       function postTodo(data) {
         var headers = new Headers({'Content-Type': 'application/json'});
-        return fetch('http://localhost:3000/todo', {
+        return fetch('http://localhost:3000/api/todo', {
           method: 'POST',
           headers: headers,
           body: JSON.stringify({ todo: data })

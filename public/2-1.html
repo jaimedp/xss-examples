@@ -1,0 +1,25 @@
+<html>
+<body>
+
+
+
+
+<h3>Type your search</h3>
+<input size=30 type="text" id="s">
+<button>Search</button>
+<hr>
+<div id="results"></div>
+
+
+<script>
+
+  var input = document.getElementById('s');
+  var div = document.getElementById('results');
+  input.addEventListener('keyup', function (e) {
+    div.innerHTML = 'Your search for <strong>' + input.value + '</strong> will be awesome!';
+  });
+
+</script>
+
+</body>
+</html>
