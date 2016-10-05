@@ -1,0 +1,63 @@
+<html>
+  <body>
+    <h3>Todo Application</h3>
+    <form id="form">
+      <input type="text" id="todo" size="30"><button type="submit">Add</button>
+    </form>
+
+    <ul id="list">
+    </ul>
+
+    <script>
+      var form = document.getElementById('form');
+      var input = document.getElementById('todo');
+
+      function encodeHTML(src) {
+        return src
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/\//g, '&#x2F;');
+      }
+
+      function renderTodos(todos) {
+        var ul = document.getElementById('list');
+        var items = '';
+
+        todos.forEach(function (t) {
+          items += '<li>' + encodeHTML(t);
+        });
+
+        ul.innerHTML = items;
+      }
+
+      function getTodos() {
+        return fetch('http://localhost:3000/todo')
+          .then(function (res) { return res.json(); });
+      }
+
+      function postTodo(data) {
+        var headers = new Headers({'Content-Type': 'application/json'});
+        return fetch('http://localhost:3000/todo', {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify({ todo: data })
+        }).then(function (res) { return res.json(); });
+      }
+
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        postTodo(input.value).then(renderTodos);
+        input.value = '';
+      });
+
+      getTodos()
+        .then(renderTodos);
+
+    </script>
+
+
+  </body>
+</html>
