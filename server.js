@@ -17,7 +17,10 @@ function csp(req, res, next) {
   next();
 }
 
-app.use(csp);
+// app.use(csp);
+
+
+
 
 app.get('/', function (req, res) {
 
